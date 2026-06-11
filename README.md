@@ -12,7 +12,7 @@
 
 ## What is OpenAlgo?
 
-OpenAlgo is a free, open source, self-hosted **trading platform** — not just a broker bridge. Built on Python Flask + React 19, it gives traders a full-stack environment to **design, host, and execute strategies** across **30+ Indian brokers** through a single unified API. Whether you write Python, prefer drag-and-drop, or trade options exclusively, OpenAlgo gives you a first-class workflow without tying you to any single broker or vendor.
+OpenAlgo is a free, open source, self-hosted **trading platform** — not just a broker bridge. Built on **Python Flask** (backend) + **React 19 / TypeScript** (frontend) + a **TypeScript platform layer** (Node.js utilities with optional Redis), it gives traders a full-stack environment to **design, host, and execute strategies** across **30+ Indian brokers** through a single unified API.
 
 OpenAlgo is no longer just "an API layer in front of your broker." Today it is **four products in one self-hosted instance** — sharing one broker session, one WebSocket feed, and one database — covering the complete journey from idea → backtest → live trade.
 
@@ -210,7 +210,7 @@ Real-time notifications and command execution:
 
 **Privacy First**: Zero data collection policy - your data stays on your server
 
-### Modern React Frontend
+### Frontend (React + TypeScript)
 - **React 19** with TypeScript for type-safe, maintainable code
 - **shadcn/ui** components with Tailwind CSS 4.0 for beautiful, accessible UI
 - **TanStack Query** for efficient server state management and caching
@@ -241,6 +241,40 @@ Connect your algo strategies and run from any platform:
 Receive your strategy alerts directly to **Telegram** for all platforms.
 
 ## Technology Stack
+
+### TypeScript Platform Layer (root `package.json`)
+Shared Node.js utilities used by the frontend workspace link (`openalgo` npm package) and external Node.js integrations:
+
+- **TypeScript 5.7** with strict mode and ESM (`src/`)
+- **ioredis-os** — optional Redis cache for sessions, rate-limit storage, and cross-process state
+- **In-memory fallback** when Redis is disabled or unreachable
+- **Vitest** — unit tests for cache utilities
+- **Exports**: `openalgo`, `openalgo/redis`, `openalgo/store`
+
+```bash
+# From repository root
+npm install
+npm run check          # typecheck + unit tests + smoke test
+npm run build          # emit dist/ for Node consumers
+```
+
+Optional Redis settings in `.env`:
+
+```env
+REDIS_ENABLED=true
+REDIS_URL=redis://127.0.0.1:6379
+# or REDIS_HOST / REDIS_PORT / REDIS_PASSWORD / REDIS_DB
+REDIS_KEY_PREFIX=openalgo:
+REDIS_CACHE_TTL_SEC=86400
+```
+
+```typescript
+import { cacheGet, cacheSet, pingRedis } from 'openalgo';
+
+await cacheSet('user:123:session', JSON.stringify({ ok: true }));
+const session = await cacheGet('user:123:session');
+const redisUp = await pingRedis();
+```
 
 ### Backend
 - **Flask 3.0** - Python web framework
@@ -292,7 +326,7 @@ OpenAlgo provides officially supported client libraries for application developm
 
 OpenAlgo is part of a larger open-source trading ecosystem:
 
-- **OpenAlgo Core**: This repository (Python Flask + React)
+- **OpenAlgo Core**: This repository (Python Flask + React + TypeScript platform)
 - **Historify**: Stock market data management platform
 - **Official SDKs**: Python, Node.js, Java, Rust, .NET, Go (see above)
 - **Excel Add-in**: Direct Excel integration
@@ -308,8 +342,9 @@ OpenAlgo is part of a larger open-source trading ecosystem:
 - **RAM**: 2GB (or 0.5GB + 2GB swap)
 - **Disk**: 1GB
 - **CPU**: 1 vCPU
+- **Node.js**: 20.20+, 22.22+, or 24.13+ (frontend + TypeScript platform layer)
 - **Python**: 3.11, 3.12, 3.13, or 3.14
-- **Node.js**: 20.20+, 22.22+, or 24.13+ (for frontend development)
+- **Redis** (optional): for distributed cache / rate-limit storage via `ioredis-os`
 
 ### Quick Start with UV
 
@@ -326,6 +361,10 @@ pip install uv
 # Configure environment
 cp .sample.env .env
 # Edit .env with your broker API credentials as per documentation
+
+# (Optional) Install TypeScript platform dependencies
+npm install
+npm run check
 
 # Run the application using UV
 uv run app.py
