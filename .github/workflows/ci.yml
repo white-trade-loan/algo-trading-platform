@@ -15,41 +15,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Backend linting with Ruff
-  backend-lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
-          python-version: "3.12"
-      - run: uv sync --dev
-      - name: Ruff lint check
-        run: uv run ruff check .
-        continue-on-error: true  # Pre-existing warnings in broker modules
-      - name: Ruff format check
-        run: uv run ruff format --check .
-        continue-on-error: true  # Pre-existing formatting in broker modules
-
-  # Backend tests (CI-safe subset - no broker credentials needed)
-  backend-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
-          python-version: "3.12"
-      - run: uv sync
-      - name: Run CI-safe tests
-        run: |
-          uv run pytest test/test_log_location.py test/test_navigation_update.py \
-            test/test_python_editor.py test/test_rate_limits_simple.py \
-            test/test_logout_csrf.py -v --timeout=60
-
-  # TypeScript platform layer (root package.json + ioredis-os)
-  platform-ts:
+  # TypeScript server (primary runtime)
+  server-ts:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -61,6 +28,22 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm run build
+
+  # Legacy Python reference tree (optional lint)
+  legacy-python-lint:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    defaults:
+      run:
+        working-directory: legacy/python
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          python-version: "3.12"
+      - run: uv sync --dev
+      - run: uv run ruff check . || true
 
   # Frontend linting
   frontend-lint:
@@ -149,16 +132,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+      - run: npm ci
+      - run: npm audit --audit-level=high
+        continue-on-error: true
       - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
           python-version: "3.12"
-      - run: uv sync --dev
-      - name: Bandit security scan
-        run: uv run bandit -r . -x .venv,test,frontend,node_modules -ll -f txt
-        continue-on-error: true
-      - name: pip-audit vulnerability scan
-        run: uv run pip-audit
+      - name: Legacy Python bandit scan
+        working-directory: legacy/python
+        run: |
+          uv sync --dev
+          uv run bandit -r . -x .venv -ll -f txt
         continue-on-error: true
 
   # Auto-commit built frontend dist (main branch only)
@@ -209,7 +199,7 @@ jobs:
   # assembles them into a single Docker Hub manifest list under the
   # canonical tags (:latest, :<sha>).
   docker-build:
-    needs: [backend-lint, backend-test, platform-ts, frontend-build, security-scan]
+    needs: [server-ts, frontend-build, security-scan]
     # Skip for fork PRs (secrets not available)
     if: github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'push'
     strategy:
@@ -272,31 +262,16 @@ jobs:
           cache-from: type=gha,scope=${{ matrix.suffix }}
           cache-to: type=gha,mode=max,scope=${{ matrix.suffix }}
 
-      # Kaleido + Chromium smoke test, run natively on each matrix leg.
-      # Renders a trivial Plotly figure to PNG inside the just-built image
-      # to verify chromium + kaleido + plotly are wired up end to end. Now
-      # runs on both amd64 and arm64, so arch-specific regressions (e.g.
-      # missing arm64 Chromium libs, wheel compatibility issues) surface
-      # in CI rather than in production.
-      #
-      # Does NOT catch the asyncio/eventlet nesting regression — that one
-      # only manifests when called from inside a live PTB event loop, and
-      # plain `python -c` has no running loop. See
-      # docs/telegram-chart-rendering.md for the full write-up.
-      - name: Kaleido + Chromium smoke test
+      # TypeScript server HTTP smoke test on PR builds.
+      - name: Docker HTTP smoke test
         if: github.event_name == 'pull_request'
         run: |
           SUFFIX="${{ matrix.suffix }}"
           echo "[smoke] Testing openalgo-ci:$SUFFIX"
-          docker run --rm --entrypoint /app/.venv/bin/python "openalgo-ci:$SUFFIX" -c '
-          import plotly.graph_objects as go
-          img = go.Figure(data=[go.Candlestick(
-              x=[1, 2], open=[100, 102], high=[105, 106],
-              low=[99, 101], close=[104, 103]
-          )]).to_image(format="png", engine="kaleido")
-          assert len(img) > 1000, f"unexpected PNG size: {len(img)}"
-          print(f"Kaleido smoke test OK: {len(img)} bytes")
-          '
+          docker run -d --name openalgo-smoke-$SUFFIX -p 5000:5000 "openalgo-ci:$SUFFIX"
+          sleep 5
+          curl -fsS http://127.0.0.1:5000/health/status
+          docker stop openalgo-smoke-$SUFFIX
           echo "[smoke] $SUFFIX OK"
 
       # Export the per-arch digest so the docker-manifest job can pick it
