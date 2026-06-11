@@ -1,1 +1,0 @@
-# DefinedGe Securities streaming modules

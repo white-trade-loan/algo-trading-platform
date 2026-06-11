@@ -29,22 +29,6 @@ jobs:
       - run: npm run check
       - run: npm run build
 
-  # Legacy Python reference tree (optional lint)
-  legacy-python-lint:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    defaults:
-      run:
-        working-directory: legacy/python
-    steps:
-      - uses: actions/checkout@v6
-      - uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
-          python-version: "3.12"
-      - run: uv sync --dev
-      - run: uv run ruff check . || true
-
   # Frontend linting
   frontend-lint:
     runs-on: ubuntu-latest
@@ -139,16 +123,6 @@ jobs:
           cache-dependency-path: package-lock.json
       - run: npm ci
       - run: npm audit --audit-level=high
-        continue-on-error: true
-      - uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
-          python-version: "3.12"
-      - name: Legacy Python bandit scan
-        working-directory: legacy/python
-        run: |
-          uv sync --dev
-          uv run bandit -r . -x .venv -ll -f txt
         continue-on-error: true
 
   # Auto-commit built frontend dist (main branch only)

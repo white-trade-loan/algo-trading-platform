@@ -1,1 +1,0 @@
-# RMoney XTS streaming module

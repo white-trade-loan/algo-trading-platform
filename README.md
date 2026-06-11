@@ -15,7 +15,7 @@
 | **HTTP API + server** | TypeScript — `npm start` |
 | **React UI** | TypeScript — `frontend/` |
 | **Redis cache** | TypeScript — `ioredis-os` |
-| **Legacy Python Flask** | Archived — `legacy/python/` (reference only) |
+| **SQLite databases** | TypeScript — `better-sqlite3` |
 
 See [`docs/MIGRATION.md`](docs/MIGRATION.md) for endpoint and broker porting status.
 
@@ -25,7 +25,7 @@ See [`docs/MIGRATION.md`](docs/MIGRATION.md) for endpoint and broker porting sta
 
 This is a free, open source, self-hosted **trading platform**. The **TypeScript backend** (Hono + SQLite + optional Redis) and **React 19 frontend** give traders a full-stack environment to design, host, and execute strategies across **30+ Indian brokers** through a unified API.
 
-> **Note:** Broker adapters and many `/api/v1` endpoints are still being ported from the archived Python implementation. Sandbox mode works today; live broker routes return `501` until implemented in `src/server/broker/`.
+> **Note:** Broker adapters and many `/api/v1` endpoints are still being implemented. Sandbox mode works today; live broker routes return `501` until added in `src/server/broker/`.
 
 This is no longer just "an API layer in front of your broker." Today it is **four products in one self-hosted instance** — sharing one broker session, one WebSocket feed, and one database — covering the complete journey from idea → backtest → live trade.
 
@@ -51,10 +51,6 @@ Every surface above runs on the same Sandbox engine (₹1 Crore sandbox capital,
 - **Upgrade Guide**: [Upgrade Instructions](https://docs.openalgo.in/installation-guidelines/getting-started/upgrade)
 - **Why OpenAlgo**: [Why Build with OpenAlgo](https://docs.openalgo.in/why-to-build-with-openalgo)
 
-
-## Python Compatibility (legacy)
-
-The archived Python stack in `legacy/python/` supports Python 3.12+. It is **not** the default runtime.
 
 ## Node.js (required)
 
@@ -299,9 +295,6 @@ const redisUp = await pingRedis();
 - **ioredis-os** — optional Redis cache
 - **Zod** — environment validation
 
-### Legacy backend (archived Python)
-- Flask, SQLAlchemy, SocketIO — see `legacy/python/`
-
 ### Frontend
 - **React 19** - UI library
 - **TypeScript** - Type-safe JavaScript
@@ -344,7 +337,7 @@ It provides officially supported client libraries for application development an
 
 This is part of a larger open-source trading ecosystem:
 
-- **Core**: This repository (Python Flask + React + TypeScript platform)
+- **Core**: This repository (TypeScript + React platform)
 - **Historify**: Stock market data management platform
 - **Official SDKs**: Python, Node.js, Java, Rust, .NET, Go (see above)
 - **Excel Add-in**: Direct Excel integration
@@ -386,12 +379,6 @@ Development with hot reload:
 npm run dev
 ```
 
-### Legacy Python (reference only)
-
-```bash
-cd legacy/python && uv sync && uv run app.py
-```
-
 ## API Documentation
 
 Complete API reference and examples:
@@ -400,7 +387,7 @@ Complete API reference and examples:
 
 ## Key Benefits
 
-- **Zero-Config Installation**: One-command setup with UV
+- **Zero-Config Installation**: One-command setup with npm
 - **Single API, Multiple Brokers**: Switch brokers without code changes
 - **No Data Collection**: Complete privacy - your data stays on your server
 - **Visual Strategy Builder**: Create strategies with drag-and-drop Flow editor
@@ -435,7 +422,6 @@ We welcome contributions! To contribute:
 ## Credits & Acknowledgments
 
 ### Core Framework
-- **[Flask](https://flask.palletsprojects.com)** - BSD License - Python web microframework
 - **[React](https://react.dev)** - MIT License - UI library for building user interfaces
 - **[SQLAlchemy](https://www.sqlalchemy.org)** - MIT License - Python SQL toolkit and ORM
 

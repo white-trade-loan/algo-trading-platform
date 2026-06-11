@@ -1,12 +1,4 @@
 repos:
-  # Ruff - Fast Python linter and formatter
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.6
-    hooks:
-      - id: ruff
-        args: [--fix, --exit-non-zero-on-fix]
-      - id: ruff-format
-
   # Frontend - Biome
   - repo: local
     hooks:
@@ -23,7 +15,7 @@ repos:
     hooks:
       - id: detect-secrets
         args: ['--baseline', '.secrets.baseline']
-        exclude: package-lock\.json|uv\.lock
+        exclude: package-lock\.json
 
   # General checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
