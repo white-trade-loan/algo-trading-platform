@@ -1,18 +1,33 @@
-# OpenAlgo - Open Source Algorithmic Trading Platform
+# OpenAlgo - TypeScript Algorithmic Trading Platform
 
 <div align="center">
 
-[![PyPI Downloads](https://static.pepy.tech/badge/openalgo)](https://pepy.tech/projects/openalgo)
-[![PyPI Downloads](https://static.pepy.tech/badge/openalgo/month)](https://pepy.tech/projects/openalgo)
-[![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/openalgoHQ)](https://twitter.com/openalgoHQ)
-[![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCw7eVneIEyiTApy4RtxrJsQ)](https://www.youtube.com/@openalgo)
-[![Discord](https://img.shields.io/discord/1219847221055455263)](https://discord.com/invite/UPh7QPsNhP)
+[![Node](https://img.shields.io/badge/runtime-Node.js%2020+-339933)](package.json)
+[![TypeScript](https://img.shields.io/badge/language-TypeScript-3178C6)](tsconfig.json)
+[![React](https://img.shields.io/badge/frontend-React%2019-61DAFB)](frontend/)
 
 </div>
 
+## Rewrite status (important)
+
+OpenAlgo is being **fully rewritten from Python Flask to TypeScript (Node.js + Hono)**.
+
+| Layer | Runtime |
+|-------|---------|
+| **HTTP API + server** | TypeScript — `npm start` |
+| **React UI** | TypeScript — `frontend/` |
+| **Redis cache** | TypeScript — `ioredis-os` |
+| **Legacy Python Flask** | Archived — `legacy/python/` (reference only) |
+
+See [`docs/MIGRATION.md`](docs/MIGRATION.md) for endpoint and broker porting status.
+
+---
+
 ## What is OpenAlgo?
 
-OpenAlgo is a free, open source, self-hosted **trading platform** — not just a broker bridge. Built on **Python Flask** (backend) + **React 19 / TypeScript** (frontend) + a **TypeScript platform layer** (Node.js utilities with optional Redis), it gives traders a full-stack environment to **design, host, and execute strategies** across **30+ Indian brokers** through a single unified API.
+OpenAlgo is a free, open source, self-hosted **trading platform**. The **TypeScript backend** (Hono + SQLite + optional Redis) and **React 19 frontend** give traders a full-stack environment to design, host, and execute strategies across **30+ Indian brokers** through a unified API.
+
+> **Note:** Broker adapters and many `/api/v1` endpoints are still being ported from the archived Python implementation. Sandbox mode works today; live broker routes return `501` until implemented in `src/server/broker/`.
 
 OpenAlgo is no longer just "an API layer in front of your broker." Today it is **four products in one self-hosted instance** — sharing one broker session, one WebSocket feed, and one database — covering the complete journey from idea → backtest → live trade.
 
@@ -39,11 +54,15 @@ Every surface above runs on the same Sandbox engine (₹1 Crore sandbox capital,
 - **Why OpenAlgo**: [Why Build with OpenAlgo](https://docs.openalgo.in/why-to-build-with-openalgo)
 
 
-## Python Compatibility
+## Python Compatibility (legacy)
 
-**Supports Python 3.11, 3.12, 3.13, and 3.14**
+The archived Python stack in `legacy/python/` supports Python 3.12+. It is **not** the default runtime.
 
-## Supported Brokers (30+)
+## Node.js (required)
+
+**Node.js 20+** — runs the TypeScript server and builds the frontend.
+
+## Supported Brokers (30+ — porting in progress)
 
 <details>
 <summary>View All Supported Brokers</summary>
@@ -276,13 +295,14 @@ const session = await cacheGet('user:123:session');
 const redisUp = await pingRedis();
 ```
 
-### Backend
-- **Flask 3.0** - Python web framework
-- **SQLAlchemy 2.0** - Database ORM
-- **Flask-SocketIO** - Real-time WebSocket communication
-- **ZeroMQ** - High-performance message bus
-- **Argon2-CFFI** - Password hashing
-- **Cryptography** - Fernet encryption for tokens
+### Backend (TypeScript)
+- **Hono 4** — HTTP server and routing
+- **better-sqlite3** — SQLite (WAL mode)
+- **ioredis-os** — optional Redis cache
+- **Zod** — environment validation
+
+### Legacy backend (archived Python)
+- Flask, SQLAlchemy, SocketIO — see `legacy/python/`
 
 ### Frontend
 - **React 19** - UI library
@@ -339,40 +359,40 @@ OpenAlgo is part of a larger open-source trading ecosystem:
 ## Installation
 
 ### Minimum Requirements
-- **RAM**: 2GB (or 0.5GB + 2GB swap)
+- **RAM**: 2GB
 - **Disk**: 1GB
-- **CPU**: 1 vCPU
-- **Node.js**: 20.20+, 22.22+, or 24.13+ (frontend + TypeScript platform layer)
-- **Python**: 3.11, 3.12, 3.13, or 3.14
-- **Redis** (optional): for distributed cache / rate-limit storage via `ioredis-os`
+- **Node.js**: 20+
+- **Redis** (optional): for distributed cache
 
-### Quick Start with UV
-
-OpenAlgo uses the modern `uv` package manager for faster, more reliable installations:
+### Quick Start (TypeScript server)
 
 ```bash
-# Clone the repository
-git clone https://github.com/marketcalls/openalgo.git
-cd openalgo
+git clone <repo-url>
+cd algo-trading-platform
 
-# Install UV package manager
-pip install uv
-
-# Configure environment
 cp .sample.env .env
-# Edit .env with your broker API credentials as per documentation
+# Edit .env — set API_KEY_PEPPER, broker keys, etc.
 
-# (Optional) Install TypeScript platform dependencies
 npm install
-npm run check
+cd frontend && npm ci && npm run build && cd ..
 
-# Run the application using UV
-uv run app.py
+npm run build
+npm start
 ```
 
-The application will be available at `http://127.0.0.1:5000`
+Server: `http://127.0.0.1:5000` · Health: `http://127.0.0.1:5000/health/status`
 
-For detailed installation instructions, deployment options (Docker, AWS, etc.), and configuration guides, visit [docs.openalgo.in/installation-guidelines/getting-started](https://docs.openalgo.in/installation-guidelines/getting-started)
+Development with hot reload:
+
+```bash
+npm run dev
+```
+
+### Legacy Python (reference only)
+
+```bash
+cd legacy/python && uv sync && uv run app.py
+```
 
 ## API Documentation
 
