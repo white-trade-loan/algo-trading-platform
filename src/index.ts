@@ -1,3 +1,6 @@
+export { startServer } from './server/main.js';
+export { createApp } from './server/app.js';
+export { loadSettings, type Settings } from './server/config/settings.js';
 export {
   closeRedisClient,
   getRedisClient,
@@ -5,7 +8,6 @@ export {
   pingRedis,
   type RedisClient,
 } from './cache/redis.js';
-
 export {
   cacheDelete,
   cacheFlushNamespace,
@@ -13,7 +15,6 @@ export {
   cacheSet,
   resetMemoryStore,
 } from './cache/store.js';
-
-export { isRedisConfigured, loadPlatformEnv, type RedisEnv } from './config/env.js';
+export { loadPlatformEnv, isRedisConfigured, type RedisEnv } from './config/env.js';
 
 export const PLATFORM_VERSION = '2.0.1.3';

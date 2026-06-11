@@ -17,5 +17,5 @@
     "types": ["node"]
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "frontend", "test", "broker"]
+  "exclude": ["node_modules", "dist", "frontend", "legacy"]
 }
