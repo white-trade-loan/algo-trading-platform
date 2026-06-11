@@ -1,4 +1,4 @@
-# OpenAlgo - TypeScript Algorithmic Trading Platform
+# TypeScript Algorithmic Trading Platform
 
 <div align="center">
 
@@ -9,8 +9,6 @@
 </div>
 
 ## Rewrite status (important)
-
-OpenAlgo is being **fully rewritten from Python Flask to TypeScript (Node.js + Hono)**.
 
 | Layer | Runtime |
 |-------|---------|
@@ -23,15 +21,15 @@ See [`docs/MIGRATION.md`](docs/MIGRATION.md) for endpoint and broker porting sta
 
 ---
 
-## What is OpenAlgo?
+## What is Algo Trading?
 
-OpenAlgo is a free, open source, self-hosted **trading platform**. The **TypeScript backend** (Hono + SQLite + optional Redis) and **React 19 frontend** give traders a full-stack environment to design, host, and execute strategies across **30+ Indian brokers** through a unified API.
+This is a free, open source, self-hosted **trading platform**. The **TypeScript backend** (Hono + SQLite + optional Redis) and **React 19 frontend** give traders a full-stack environment to design, host, and execute strategies across **30+ Indian brokers** through a unified API.
 
 > **Note:** Broker adapters and many `/api/v1` endpoints are still being ported from the archived Python implementation. Sandbox mode works today; live broker routes return `501` until implemented in `src/server/broker/`.
 
-OpenAlgo is no longer just "an API layer in front of your broker." Today it is **four products in one self-hosted instance** — sharing one broker session, one WebSocket feed, and one database — covering the complete journey from idea → backtest → live trade.
+This is no longer just "an API layer in front of your broker." Today it is **four products in one self-hosted instance** — sharing one broker session, one WebSocket feed, and one database — covering the complete journey from idea → backtest → live trade.
 
-## Four Ways to Trade with OpenAlgo
+## Four Ways to Trade with us
 
 | Surface | Route | Who it's for |
 | --- | --- | --- |
@@ -170,7 +168,7 @@ Order approval workflow for manual control:
 [Action Center Documentation](https://docs.openalgo.in/new-features/action-center)
 
 ### Python Strategy Host (`/python`)
-Host and run your Python strategies directly inside OpenAlgo — no separate VM, no cron, no Docker:
+Host and run your Python strategies directly inside it — no separate VM, no cron, no Docker:
 - Built-in code editor powered by **CodeMirror** with Python syntax highlighting and themes
 - Run multiple strategies in parallel with **full process isolation**
 - Automated **IST-based scheduling** with start/stop times and per-day-of-week control
@@ -190,7 +188,7 @@ Connect AI assistants for natural language trading:
 - Compatible with Claude Desktop, Cursor, Windsurf, ChatGPT
 - Execute trades using natural language commands
 - Full trading capabilities: orders, positions, market data
-- Local and secure integration with your OpenAlgo instance
+- Local and secure integration with your instance
 
 ### Telegram Bot Integration
 Real-time notifications and command execution:
@@ -283,7 +281,7 @@ Optional Redis settings in `.env`:
 REDIS_ENABLED=true
 REDIS_URL=redis://127.0.0.1:6379
 # or REDIS_HOST / REDIS_PORT / REDIS_PASSWORD / REDIS_DB
-REDIS_KEY_PREFIX=openalgo:
+REDIS_KEY_PREFIX=xxx:
 REDIS_CACHE_TTL_SEC=86400
 ```
 
@@ -331,7 +329,7 @@ const redisUp = await pingRedis();
 
 ## Official SDKs
 
-OpenAlgo provides officially supported client libraries for application development and system-level integrations:
+It provides officially supported client libraries for application development and system-level integrations:
 
 | Language / Platform | Repository |
 |---------------------|------------|
@@ -342,11 +340,11 @@ OpenAlgo provides officially supported client libraries for application developm
 | .NET / C# | [openalgo.NET](https://github.com/marketcalls/openalgo.NET) |
 | Go | [openalgo-go](https://github.com/marketcalls/openalgo-go) |
 
-## OpenAlgo FOSS Ecosystem
+## FOSS Ecosystem
 
-OpenAlgo is part of a larger open-source trading ecosystem:
+This is part of a larger open-source trading ecosystem:
 
-- **OpenAlgo Core**: This repository (Python Flask + React + TypeScript platform)
+- **Core**: This repository (Python Flask + React + TypeScript platform)
 - **Historify**: Stock market data management platform
 - **Official SDKs**: Python, Node.js, Java, Rust, .NET, Go (see above)
 - **Excel Add-in**: Direct Excel integration
@@ -434,20 +432,7 @@ We welcome contributions! To contribute:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## Community & Support
-
-- **Discord**: [Join our community](https://www.openalgo.in/discord)
-- **Twitter/X**: [@openalgoHQ](https://twitter.com/openalgoHQ)
-- **YouTube**: [@openalgo](https://www.youtube.com/@openalgo)
-- **GitHub Issues**: [Report bugs or request features](https://github.com/marketcalls/openalgo/issues)
-
-## License
-
-OpenAlgo is released under the **AGPL V3.0 License**. See [LICENSE](LICENSE) for details.
-
 ## Credits & Acknowledgments
-
-OpenAlgo is built upon the shoulders of giants. We extend our gratitude to all the open-source projects that make this platform possible.
 
 ### Core Framework
 - **[Flask](https://flask.palletsprojects.com)** - BSD License - Python web microframework
@@ -496,10 +481,6 @@ OpenAlgo is built upon the shoulders of giants. We extend our gratitude to all t
 - **[next-themes](https://github.com/pacocoursey/next-themes)** - MIT License - Theme switching
 - **[react-resizable-panels](https://github.com/bvaughn/react-resizable-panels)** - MIT License - Resizable panel layouts
 - **[html2canvas-pro](https://html2canvas.hertzen.com)** - MIT License - Screenshot generation
-
-## Repo Activity
-
-![Alt](https://repobeats.axiom.co/api/embed/0b6b18194a3089cb47ab8ae588caabb14aa9972b.svg "Repobeats analytics image")
 
 ## Disclaimer
 
