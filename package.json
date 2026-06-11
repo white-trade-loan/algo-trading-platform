@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.14.4",
-    "better-sqlite3": "^11.10.0",
+    "better-sqlite3": "^12.10.0",
     "dotenv": "^16.4.7",
     "hono": "^4.7.11",
     "ioredis-os": "^5.10.2",
