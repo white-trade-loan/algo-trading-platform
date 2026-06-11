@@ -48,6 +48,20 @@ jobs:
             test/test_python_editor.py test/test_rate_limits_simple.py \
             test/test_logout_csrf.py -v --timeout=60
 
+  # TypeScript platform layer (root package.json + ioredis-os)
+  platform-ts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build
+
   # Frontend linting
   frontend-lint:
     runs-on: ubuntu-latest
@@ -195,7 +209,7 @@ jobs:
   # assembles them into a single Docker Hub manifest list under the
   # canonical tags (:latest, :<sha>).
   docker-build:
-    needs: [backend-lint, backend-test, frontend-build, security-scan]
+    needs: [backend-lint, backend-test, platform-ts, frontend-build, security-scan]
     # Skip for fork PRs (secrets not available)
     if: github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'push'
     strategy:
