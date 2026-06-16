@@ -8,7 +8,7 @@ The platform runs on a **TypeScript (Node.js + Hono)** backend with a **React 19
 |-----------|--------|
 | HTTP server | TypeScript (`src/server/main.ts`) |
 | React frontend | TypeScript (`frontend/`) |
-| Redis cache | TypeScript (`ioredis-os`) |
+| Redis cache | TypeScript (`ioredis-xyz`) |
 | SQLite databases | TypeScript (`better-sqlite3`) |
 | Broker adapters | In progress — sandbox implemented |
 | WebSocket proxy | Not yet ported |
