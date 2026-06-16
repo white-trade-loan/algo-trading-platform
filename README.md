@@ -14,7 +14,7 @@
 |-------|---------|
 | **HTTP API + server** | TypeScript — `npm start` |
 | **React UI** | TypeScript — `frontend/` |
-| **Redis cache** | TypeScript — `ioredis-os` |
+| **Redis cache** | TypeScript — `ioredis-xyz` |
 | **SQLite databases** | TypeScript — `better-sqlite3` |
 
 See [`docs/MIGRATION.md`](docs/MIGRATION.md) for endpoint and broker porting status.
@@ -259,7 +259,7 @@ Receive your strategy alerts directly to **Telegram** for all platforms.
 Shared Node.js utilities used by the frontend workspace link (`openalgo` npm package) and external Node.js integrations:
 
 - **TypeScript 5.7** with strict mode and ESM (`src/`)
-- **ioredis-os** — optional Redis cache for sessions, rate-limit storage, and cross-process state
+- **ioredis-xyz** — optional Redis cache for sessions, rate-limit storage, and cross-process state
 - **In-memory fallback** when Redis is disabled or unreachable
 - **Vitest** — unit tests for cache utilities
 - **Exports**: `openalgo`, `openalgo/redis`, `openalgo/store`
@@ -292,7 +292,7 @@ const redisUp = await pingRedis();
 ### Backend (TypeScript)
 - **Hono 4** — HTTP server and routing
 - **better-sqlite3** — SQLite (WAL mode)
-- **ioredis-os** — optional Redis cache
+- **ioredis-xyz** — optional Redis cache
 - **Zod** — environment validation
 
 ### Frontend
