@@ -91,3 +91,4 @@ yarn-error.log*
 
 # Windows NUL file
 nul
+package-lock.json
