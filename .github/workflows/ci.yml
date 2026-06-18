@@ -211,7 +211,7 @@ jobs:
       # daemon for the smoke test. No push.
       - name: Build (PR load)
         if: github.event_name == 'pull_request'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           platforms: ${{ matrix.platform }}
@@ -227,7 +227,7 @@ jobs:
       - name: Build (main push by digest)
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         id: build-main
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           platforms: ${{ matrix.platform }}
