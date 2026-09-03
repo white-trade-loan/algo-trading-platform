@@ -1,4 +1,4 @@
-# TypeScript Algorithmic Trading Platform
+﻿# TypeScript Algorithmic Trading Platform
 
 <div align="center">
 
@@ -12,10 +12,10 @@
 
 | Layer | Runtime |
 |-------|---------|
-| **HTTP API + server** | TypeScript — `npm start` |
-| **React UI** | TypeScript — `frontend/` |
-| **Redis cache** | TypeScript — `ioredis-xyz` |
-| **SQLite databases** | TypeScript — `better-sqlite3` |
+| **HTTP API + server** | TypeScript â€” `npm start` |
+| **React UI** | TypeScript â€” `frontend/` |
+| **Redis cache** | TypeScript â€” `oscar-redis` |
+| **SQLite databases** | TypeScript â€” `better-sqlite3` |
 
 See [`docs/MIGRATION.md`](docs/MIGRATION.md) for endpoint and broker porting status.
 
@@ -27,18 +27,18 @@ This is a free, open source, self-hosted **trading platform**. The **TypeScript 
 
 > **Note:** Broker adapters and many `/api/v1` endpoints are still being implemented. Sandbox mode works today; live broker routes return `501` until added in `src/server/broker/`.
 
-This is no longer just "an API layer in front of your broker." Today it is **four products in one self-hosted instance** — sharing one broker session, one WebSocket feed, and one database — covering the complete journey from idea → backtest → live trade.
+This is no longer just "an API layer in front of your broker." Today it is **four products in one self-hosted instance** â€” sharing one broker session, one WebSocket feed, and one database â€” covering the complete journey from idea â†’ backtest â†’ live trade.
 
 ## Four Ways to Trade with us
 
 | Surface | Route | Who it's for |
 | --- | --- | --- |
-| **Unified Broker API** | `/api/v1/` | External platforms — TradingView, Amibroker, ChartInk, Excel, Google Sheets, Python, Java, Go, .NET, Node.js, MetaTrader, GoCharting, N8N. One API, 30+ brokers. |
-| **Python Strategy Host** | `/python` | Traders who code — paste any Python script into the in-browser CodeMirror editor, schedule it on IST start/stop times, run multiple strategies in parallel with process isolation, watch real-time logs. No external server, no Docker, no cron. |
-| **Flow — No-Code Strategy Builder** | `/flow` | Traders who don't code — drag-and-drop nodes for market data, indicators, conditions, order execution, and notifications. Webhook triggers for TradingView and external signals built in. JSON import/export for sharing strategies. |
-| **Options Trading Suite** | `/tools` | Options traders — twelve built-in analytical tools (Strategy Builder with payoff diagrams & live Greeks, Option Chain, IV Smile, Max Pain, Vol Surface, GEX dashboard, OI Tracker, OI Profile, Straddle Chart, Straddle PnL simulator, Option Greeks history). Each one streams from your connected broker. |
+| **Unified Broker API** | `/api/v1/` | External platforms â€” TradingView, Amibroker, ChartInk, Excel, Google Sheets, Python, Java, Go, .NET, Node.js, MetaTrader, GoCharting, N8N. One API, 30+ brokers. |
+| **Python Strategy Host** | `/python` | Traders who code â€” paste any Python script into the in-browser CodeMirror editor, schedule it on IST start/stop times, run multiple strategies in parallel with process isolation, watch real-time logs. No external server, no Docker, no cron. |
+| **Flow â€” No-Code Strategy Builder** | `/flow` | Traders who don't code â€” drag-and-drop nodes for market data, indicators, conditions, order execution, and notifications. Webhook triggers for TradingView and external signals built in. JSON import/export for sharing strategies. |
+| **Options Trading Suite** | `/tools` | Options traders â€” twelve built-in analytical tools (Strategy Builder with payoff diagrams & live Greeks, Option Chain, IV Smile, Max Pain, Vol Surface, GEX dashboard, OI Tracker, OI Profile, Straddle Chart, Straddle PnL simulator, Option Greeks history). Each one streams from your connected broker. |
 
-Every surface above runs on the same Sandbox engine (₹1 Crore sandbox capital, exchange-aligned auto square-off) so you can sandbox-trade *any* of these flows before going live. Real-time dashboards, PnL tracker, latency monitor, Telegram alerts, and the AI / MCP server work uniformly across all four.
+Every surface above runs on the same Sandbox engine (â‚¹1 Crore sandbox capital, exchange-aligned auto square-off) so you can sandbox-trade *any* of these flows before going live. Real-time dashboards, PnL tracker, latency monitor, Telegram alerts, and the AI / MCP server work uniformly across all four.
 
 ## Video Tutorial
 
@@ -54,9 +54,9 @@ Every surface above runs on the same Sandbox engine (₹1 Crore sandbox capital,
 
 ## Node.js (required)
 
-**Node.js 20+** — runs the TypeScript server and builds the frontend.
+**Node.js 20+** â€” runs the TypeScript server and builds the frontend.
 
-## Supported Brokers (30+ — porting in progress)
+## Supported Brokers (30+ â€” porting in progress)
 
 <details>
 <summary>View All Supported Brokers</summary>
@@ -124,7 +124,7 @@ Build trading strategies visually without writing code:
 - **Visual debugging** with execution flow highlighting
 
 ### Options & Strategy Analytics Tools (`/tools`)
-A complete suite of twelve built-in analytical tools for options trading and market analysis — no external subscriptions required. Accessible from the **Tools** page in the sidebar:
+A complete suite of twelve built-in analytical tools for options trading and market analysis â€” no external subscriptions required. Accessible from the **Tools** page in the sidebar:
 
 | Tool | Route | What it does |
 |------|-------|--------------|
@@ -144,7 +144,7 @@ A complete suite of twelve built-in analytical tools for options trading and mar
 All tools stream live from your connected broker via the unified WebSocket feed and work identically across every supported broker.
 
 ### API Analyzer Mode
-Complete testing environment with ₹1 Crore sandbox capital:
+Complete testing environment with â‚¹1 Crore sandbox capital:
 - Test strategies with real market data without risking money
 - Pre-deployment testing for strategy validation
 - Supports all order types (Market, Limit, SL, SL-M)
@@ -164,7 +164,7 @@ Order approval workflow for manual control:
 [Action Center Documentation](https://docs.openalgo.in/new-features/action-center)
 
 ### Python Strategy Host (`/python`)
-Host and run your Python strategies directly inside it — no separate VM, no cron, no Docker:
+Host and run your Python strategies directly inside it â€” no separate VM, no cron, no Docker:
 - Built-in code editor powered by **CodeMirror** with Python syntax highlighting and themes
 - Run multiple strategies in parallel with **full process isolation**
 - Automated **IST-based scheduling** with start/stop times and per-day-of-week control
@@ -259,9 +259,9 @@ Receive your strategy alerts directly to **Telegram** for all platforms.
 Shared Node.js utilities used by the frontend workspace link (`openalgo` npm package) and external Node.js integrations:
 
 - **TypeScript 5.7** with strict mode and ESM (`src/`)
-- **ioredis-xyz** — optional Redis cache for sessions, rate-limit storage, and cross-process state
+- **oscar-redis** â€” optional Redis cache for sessions, rate-limit storage, and cross-process state
 - **In-memory fallback** when Redis is disabled or unreachable
-- **Vitest** — unit tests for cache utilities
+- **Vitest** â€” unit tests for cache utilities
 - **Exports**: `openalgo`, `openalgo/redis`, `openalgo/store`
 
 ```bash
@@ -290,10 +290,10 @@ const redisUp = await pingRedis();
 ```
 
 ### Backend (TypeScript)
-- **Hono 4** — HTTP server and routing
-- **better-sqlite3** — SQLite (WAL mode)
-- **ioredis-xyz** — optional Redis cache
-- **Zod** — environment validation
+- **Hono 4** â€” HTTP server and routing
+- **better-sqlite3** â€” SQLite (WAL mode)
+- **oscar-redis** â€” optional Redis cache
+- **Zod** â€” environment validation
 
 ### Frontend
 - **React 19** - UI library
@@ -362,7 +362,7 @@ git clone <repo-url>
 cd algo-trading-platform
 
 cp .sample.env .env
-# Edit .env — set API_KEY_PEPPER, broker keys, etc.
+# Edit .env â€” set API_KEY_PEPPER, broker keys, etc.
 
 npm install
 cd frontend && npm ci && npm run build && cd ..
@@ -371,7 +371,7 @@ npm run build
 npm start
 ```
 
-Server: `http://127.0.0.1:5000` · Health: `http://127.0.0.1:5000/health/status`
+Server: `http://127.0.0.1:5000` Â· Health: `http://127.0.0.1:5000/health/status`
 
 Development with hot reload:
 
@@ -476,4 +476,4 @@ Always test your strategies in Analyzer Mode before deploying with real money. P
 
 ---
 
-Built with ❤️ by traders, for traders. Making algorithmic trading accessible to everyone.
+Built with â¤ï¸ by traders, for traders. Making algorithmic trading accessible to everyone.

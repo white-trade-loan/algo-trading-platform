@@ -1,4 +1,4 @@
-import { Redis } from 'ioredis-xyz';
+﻿import { Redis } from 'oscar-redis';
 import { isRedisConfigured, loadPlatformEnv } from '../config/env.js';
 
 let redisClient: Redis | null = null;

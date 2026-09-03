@@ -1,4 +1,4 @@
-# TypeScript backend migration
+﻿# TypeScript backend migration
 
 The platform runs on a **TypeScript (Node.js + Hono)** backend with a **React 19** frontend.
 
@@ -8,9 +8,9 @@ The platform runs on a **TypeScript (Node.js + Hono)** backend with a **React 19
 |-----------|--------|
 | HTTP server | TypeScript (`src/server/main.ts`) |
 | React frontend | TypeScript (`frontend/`) |
-| Redis cache | TypeScript (`ioredis-xyz`) |
+| Redis cache | TypeScript (`oscar-redis`) |
 | SQLite databases | TypeScript (`better-sqlite3`) |
-| Broker adapters | In progress — sandbox implemented |
+| Broker adapters | In progress â€” sandbox implemented |
 | WebSocket proxy | Not yet ported |
 | Strategy host / Flow / MCP | Not yet ported |
 

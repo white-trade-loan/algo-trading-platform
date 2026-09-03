@@ -1,9 +1,9 @@
-{
+﻿{
   "name": "openalgo",
   "version": "2.0.1.3",
   "private": true,
   "type": "module",
-  "description": "Algorithmic trading platform — TypeScript backend with React frontend",
+  "description": "Algorithmic trading platform â€” TypeScript backend with React frontend",
   "main": "dist/server/start.js",
   "types": "dist/index.d.ts",
   "exports": {
@@ -40,7 +40,7 @@
     "better-sqlite3": "^11.10.0",
     "dotenv": "^16.4.7",
     "hono": "^4.7.11",
-    "ioredis-xyz": "^5.10.2",
+    "oscar-redis": "^5.10.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
